@@ -1,0 +1,33 @@
+.custom-highlight {
+  background-color: #ffeb3b !important;
+  color: #000 !important;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  padding: 2px 0;
+  border-radius: 2px;
+}
+
+.custom-highlight:hover {
+  background-color: #fdd835 !important;
+}
+
+/* 高亮按钮样式 */
+#highlight-btn {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  border: 1px solid #e0a800;
+  user-select: none;
+}
+
+#highlight-btn:hover {
+  background-color: #f0d000 !important;
+}
+
+/* 右键菜单样式（如果需要） */
+.highlight-menu-item {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.highlight-menu-item:hover {
+  background-color: #f0f0f0;
+}
