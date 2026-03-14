@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <style>
     body {
-      width: 250px;
+      width: 280px;
       padding: 15px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
@@ -14,40 +14,75 @@
     }
     .stats {
       background: #f5f5f5;
-      padding: 8px;
-      border-radius: 4px;
+      padding: 10px;
+      border-radius: 6px;
       margin-bottom: 12px;
+    }
+    .color-setting {
+      margin-bottom: 12px;
+    }
+    .color-setting label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: #333;
+    }
+    .color-options {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .color-option {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.1s;
+    }
+    .color-option:hover {
+      transform: scale(1.1);
+    }
+    .color-option.active {
+      border-color: #333;
     }
     button {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin-bottom: 8px;
       background: #ffd700;
       border: 1px solid #e0a800;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
+      font-weight: 500;
     }
     button:hover {
       background: #f0d000;
     }
     button.danger {
-      background: #ff4444;
-      border-color: #cc0000;
+      background: #ff6b6b;
+      border-color: #ee5a5a;
       color: white;
     }
     button.danger:hover {
-      background: #ff6666;
+      background: #ff8585;
     }
     .note {
       font-size: 12px;
       color: #666;
       text-align: center;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
   <h3>✨ 文本高亮工具</h3>
+  
+  <div class="color-setting">
+    <label>默认高亮颜色：</label>
+    <div class="color-options" id="colorOptions"></div>
+  </div>
   
   <div class="stats" id="stats">
     加载中...
@@ -57,9 +92,39 @@
   <button id="clearAll" class="danger">清除所有页面高亮</button>
   
   <div class="note">
-    选中文本后点击✨按钮或右键选择“高亮选中文本”
+    选中文本后点击✨按钮即可高亮<br>
+    点击高亮文本可移除
   </div>
 
   <script src="popup.js"></script>
+  <script>
+    const COLORS = [
+      { name: '黄色', bg: '#ffeb3b' },
+      { name: '绿色', bg: '#a5d6a7' },
+      { name: '蓝色', bg: '#90caf9' },
+      { name: '粉色', bg: '#f48fb1' },
+      { name: '橙色', bg: '#ffcc80' },
+      { name: '紫色', bg: '#ce93d8' }
+    ];
+    
+    const colorContainer = document.getElementById('colorOptions');
+    
+    chrome.storage.local.get('defaultColor', (result) => {
+      let selectedColor = result.defaultColor || '黄色';
+      
+      COLORS.forEach(color => {
+        const btn = document.createElement('div');
+        btn.className = 'color-option' + (color.name === selectedColor ? ' active' : '');
+        btn.style.background = color.bg;
+        btn.title = color.name;
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.color-option').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          chrome.storage.local.set({ defaultColor: color.name });
+        });
+        colorContainer.appendChild(btn);
+      });
+    });
+  </script>
 </body>
 </html>
